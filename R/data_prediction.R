@@ -10,33 +10,34 @@ library(randomForest)
 library(earth)
 library(e1071)
 
-source("R/data_analysis.R")
-rm(chains, latestURNs, manual_input, ofsted, qualifiedleavers, rebrokerages, schools, schools_size,
-   swc_acads, swc_acads_w_trust, teachers, turn_wast_schools, turnover)
+# source("R/data_analysis.R")
+# rm(chains, latestURNs, manual_input, ofsted, qualifiedleavers, rebrokerages, schools, schools_size,
+#   swc_acads, swc_acads_w_trust, teachers, turn_wast_schools, turnover)
 
 
 # Prepare data -----------------------------------------------
-reduced_dataset <- turn_wast_teachers %>%
-  filter(CensusYear == 2017) %>%
-  dplyr::select(# Teacher's characteristics
-         QTStatus, 
-         TOTFTE,
-         ContractAgreementType,
-         GrossPay,
-         Leadership,
-         # School's characteristics
-         School_Type, 
-         SchoolPhase_Grouped,
-         School_FTE_Teachers, 
-         OfstedOverallScore, 
-         YearInTrust,
-         Wastage) %>%
-  mutate(Wastage = as.factor(Wastage))
+# reduced_dataset <- turn_wast_teachers %>%
+#   filter(CensusYear == 2017) %>%
+#   dplyr::select(# Teacher's characteristics
+#          QTStatus, 
+#          TOTFTE,
+#          ContractAgreementType,
+#          GrossPay,
+#          Leadership,
+#          # School's characteristics
+#          School_Type, 
+#          SchoolPhase_Grouped,
+#          School_FTE_Teachers, 
+#          OfstedOverallScore, 
+#          YearInTrust,
+#          Wastage) %>%
+#   mutate(Wastage = as.factor(Wastage))
+# 
+# # YearInTrust = 0 if non-academy 
+# reduced_dataset <- reduced_dataset %>%
+#   mutate(YearInTrust = case_when(is.na(YearInTrust) ~ 0, TRUE ~ YearInTrust))
 
-# YearInTrust = 0 if non-academy 
-reduced_dataset <- reduced_dataset %>%
-  mutate(YearInTrust = case_when(is.na(YearInTrust) ~ 0, TRUE ~ YearInTrust))
-
+reduced_dataset <- readRDS("data/reduced_dataset.rds")
 
 # Data splitting -----------------------------------------------
 
