@@ -37,7 +37,13 @@ library(e1071)
 # reduced_dataset <- reduced_dataset %>%
 #   mutate(YearInTrust = case_when(is.na(YearInTrust) ~ 0, TRUE ~ YearInTrust))
 
-reduced_dataset <- readRDS("data/reduced_dataset.rds")
+reduced_dataset <- readRDS("data/reduced_dataset.rds") %>%
+  filter(CensusYear == 2017) %>%
+  mutate(ContractAgreementType = as.factor(ContractAgreementType),
+         Leadership = as.factor(Leadership),
+         School_Type = as.factor(School_Type),
+         SchoolPhase_Grouped = as.factor(SchoolPhase_Grouped)) %>%
+  select(-CensusYear)
 
 # Data splitting -----------------------------------------------
 
@@ -64,8 +70,8 @@ y = trainData$Wastage
 
 # Descriptive stats -------------------------------------------------------
 
-skimmed <- skim_to_wide(trainData)
-skimmed[, c(1:5, 9:11, 13, 15:16)]
+skimmed <- skim(trainData)
+skimmed[, c(1:5, 9:11, 13, 15)]
 
 # Pre-process data --------------------------------------
 
@@ -111,42 +117,42 @@ apply(trainData4[, 1:24], 2, FUN=function(x){c('min'=min(x), 'max'=max(x))})
 
 # Visualize importance of predictors --------------------------------------
 
-featurePlot(x = trainData[, 1:24], 
-            y = trainData$Wastage, 
-            plot = "box",
-            strip=strip.custom(par.strip.text=list(cex=.7)),
-            scales = list(x = list(relation="free"), 
-                          y = list(relation="free")))
-
-
-featurePlot(x = trainData[, 1:24], 
-            y = as.factor(trainData$Wastage), 
-            plot = "density",
-            strip=strip.custom(par.strip.text=list(cex=.7)),
-            scales = list(x = list(relation="free"), 
-                          y = list(relation="free")))
+# featurePlot(x = trainData[, 1:24], 
+#             y = trainData$Wastage, 
+#             plot = "box",
+#             strip=strip.custom(par.strip.text=list(cex=.7)),
+#             scales = list(x = list(relation="free"), 
+#                           y = list(relation="free")))
+# 
+# 
+# featurePlot(x = trainData[, 1:24], 
+#             y = as.factor(trainData$Wastage), 
+#             plot = "density",
+#             strip=strip.custom(par.strip.text=list(cex=.7)),
+#             scales = list(x = list(relation="free"), 
+#                           y = list(relation="free")))
 
 
 
 # Select the important features using recursive feature elimination (rfe) ----------------------------------------
-
-memory.limit(size=2500)
-
-set.seed(100)
-options(warn=-1)
-
-subsets <- c(5,8,10)
-
-ctrl <- rfeControl(functions = rfFuncs,
-                   method = "repeatedcv",
-                   repeats = 5,
-                   verbose = FALSE)
-
-lmProfile <- rfe(x=trainData[, 1:18], y=trainData$Wastage,
-                 sizes = subsets,
-                 rfeControl = ctrl)
-
-lmProfile
+# 
+# memory.limit(size=2500)
+# 
+# set.seed(100)
+# options(warn=-1)
+# 
+# subsets <- c(5,8,10)
+# 
+# ctrl <- rfeControl(functions = rfFuncs,
+#                    method = "repeatedcv",
+#                    repeats = 5,
+#                    verbose = FALSE)
+# 
+# lmProfile <- rfe(x=trainData4[, 1:24], y=trainData4$Wastage,
+#                  sizes = subsets,
+#                  rfeControl = ctrl)
+# 
+# lmProfile
 
 
 # Training and tuning the model -------------------------------------------
