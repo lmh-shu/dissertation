@@ -224,112 +224,36 @@ confusionMatrix(reference = testData4$Wastage, data = predicted, mode='everythin
 # 
 # (8055/90349)*100
 
-model_mars$coefnames
-
-model_mars$method
-
-model_mars$results
-
-model_mars$bestTune
-
-model_mars$call
-
-model_mars$metric
-
-model_mars$finalModel
-
-model_mars$trainingData
-
-model_mars$resample
-
-model_mars$resampledCM
-
-model_mars$perfNames
-
-model_mars$maximize
-
-model_mars$yLimits
-
-model_mars$levels
-
-model_mars$terms
-
-model_mars$xlevels
-
-model_mars$fitControl
-
-# Evaluate performance of multiple machine learning algorithms ---------------------------------------------------------------------
-
-fitControl <- trainControl(## 10-fold CV
-  method = "repeatedcv",
-  number = 10,
-  ## repeated ten times
-  repeats = 10)
-
-## Training Adaboost
-set.seed(100)
-# Train the model using adaboost
-model_adaboost = train(as.factor(Wastage) ~ ., data=training_unproc[1:1000,], method='adaboost', tuneLength=2, trControl = fitControl)
-model_adaboost
-
-## Training Random Forest
-set.seed(100)
-
-# Train the model using rf
-model_rf = train(Wastage ~ ., data=training, method='rf', tuneLength=5, trControl = fitControl)
-model_rf
-
-## Training xgBoost Dart
-set.seed(100)
-
-# Train the model using MARS
-model_xgbDART = train(Wastage ~ ., data=training, method='xgbDART', tuneLength=5, trControl = fitControl, verbose=F)
-model_xgbDART
-
-## Support Vector Machines with Radial Basis Function Kernel
-set.seed(100)
-# Train the model 
-model_svmRadial = train(Wastage ~ ., data=training, method='svmRadial', tuneLength=15, trControl = fitControl)
-model_svmRadial
-
-
-# Run resamples() to compare the models -----------------------------------
-# Compare model performances using resample()
-models_compare <- resamples(list(ADABOOST=model_adaboost, RF=model_rf, XGBDART=model_xgbDART, MARS=model_mars3, SVM=model_svmRadial))
-
-# Summary of the models performances
-summary(models_compare)
-
-# Draw box plots to compare models
-scales <- list(x=list(relation="free"), y=list(relation="free"))
-bwplot(models_compare, scales=scales)
-
-
-
-
-
-
-
-# # Scatterplots
-# theme1 <- trellis.par.get()
-# theme1$plot.symbol$col = rgb(.2, .2, .2, .4)
-# theme1$plot.symbol$pch = 16
-# theme1$plot.line$col = rgb(1, 0, 0, .7)
-# theme1$plot.line$lwd <- 2
-# trellis.par.set(theme1)
-# regVar <- c("TOTFTE", "GrossPay", "School_FTE_Teachers", "OfstedOverallScore")
-
-# featurePlot(x = reduced_dataset[, regVar], 
-#             y = reduced_dataset$Wastage, 
-#             plot = "scatter", 
-#             layout = c(3, 1))
-
-# Pre-processing
+# model_mars$coefnames
 # 
+# model_mars$method
 # 
-# set.seed(825)
-# logiboostFit1 <- train( Wastage ~ ., data = training, 
-#                  method = "vglmAdjCat", # logistic regression boosted
-#                  trControl = fitControl)
-
-
+# model_mars$results
+# 
+# model_mars$bestTune
+# 
+# model_mars$call
+# 
+# model_mars$metric
+# 
+# model_mars$finalModel
+# 
+# model_mars$trainingData
+# 
+# model_mars$resample
+# 
+# model_mars$resampledCM
+# 
+# model_mars$perfNames
+# 
+# model_mars$maximize
+# 
+# model_mars$yLimits
+# 
+# model_mars$levels
+# 
+# model_mars$terms
+# 
+# model_mars$xlevels
+# 
+# model_mars$fitControl
